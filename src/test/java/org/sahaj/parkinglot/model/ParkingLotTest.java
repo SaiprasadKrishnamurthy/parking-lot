@@ -1,9 +1,9 @@
-package org.sahaj.parkinglot;
+package org.sahaj.parkinglot.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.sahaj.parkinglot.model.ParkingLotFullException;
+import org.sahaj.parkinglot.model.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

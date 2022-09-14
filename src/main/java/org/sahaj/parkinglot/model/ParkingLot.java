@@ -1,6 +1,6 @@
-package org.sahaj.parkinglot;
+package org.sahaj.parkinglot.model;
 
-import org.sahaj.parkinglot.model.ParkingLotFullException;
+import org.sahaj.parkinglot.service.ReceiptGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

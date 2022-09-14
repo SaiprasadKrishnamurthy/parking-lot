@@ -1,4 +1,8 @@
-package org.sahaj.parkinglot;
+package org.sahaj.parkinglot.service;
+
+import org.sahaj.parkinglot.model.Receipt;
+import org.sahaj.parkinglot.model.Ticket;
+import org.sahaj.parkinglot.model.Vehicle;
 
 public class ReceiptGenerator {
 

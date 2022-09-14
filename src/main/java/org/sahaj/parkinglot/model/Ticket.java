@@ -1,4 +1,4 @@
-package org.sahaj.parkinglot;
+package org.sahaj.parkinglot.model;
 
 public class Ticket {
 
