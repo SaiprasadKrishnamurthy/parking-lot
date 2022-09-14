@@ -1,7 +1,10 @@
 package org.sahaj.parkinglot;
 
+import java.util.UUID;
+
 public class Spot {
 
+    private final String id = UUID.randomUUID().toString();
     private Vehicle carType;
 
     public Spot(final Vehicle carType) {
@@ -12,4 +15,7 @@ public class Spot {
         return carType;
     }
 
+    public String getId() {
+        return id;
+    }
 }
