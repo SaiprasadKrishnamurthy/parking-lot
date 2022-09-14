@@ -17,6 +17,7 @@ class ParkingLotTest {
         this.parkingLotBuilder = new ParkingLot.Builder().withLargeSpots(2).withMediumSpots(5).withSmallSpots(10);
     }
 
+    @DisplayName("Should allocate a parking spot and return a ticket with an available spot.")
     @Test
     void shouldAllocateParkingSpotAndReturnTicketForACarWhenSpotAvailable() {
         ParkingLot parkingLot = this.parkingLotBuilder.build();
@@ -25,6 +26,7 @@ class ParkingLotTest {
         assertEquals(0, ticket.getId());
     }
 
+    @DisplayName("Should unallocate a parking spot when a valid parking ticket is passed.")
     @Test
     void shouldUnParkAParkedCarFromAGivenTicket() {
         ParkingLot parkingLot = this.parkingLotBuilder.build();
@@ -33,6 +35,7 @@ class ParkingLotTest {
         assertEquals(car, parkingLot.unPark(ticket).forVehicle());
     }
 
+    @DisplayName("Should fetch the spot occupancies by vehicle types.")
     @Test
     void shouldTrackSpotOccupancyByVehicleType() {
         ParkingLot parkingLot = this.parkingLotBuilder.withMediumSpots(1).withSmallSpots(1).build();
@@ -44,6 +47,7 @@ class ParkingLotTest {
         assertEquals(2, parkingLot.park(truck).getId());
     }
 
+    @DisplayName("Should park and unpark fixed number of cars with unpark being idempotent operation.")
     @Test
     void shouldUnParkAndUnParkFixedNumberOfCars() {
         ParkingLot parkingLot = this.parkingLotBuilder.withMediumSpots(3).withSmallSpots(0).withLargeSpots(0).build();
@@ -57,6 +61,7 @@ class ParkingLotTest {
         assertEquals(3, parkingLot.totalSpotCount());
     }
 
+    @DisplayName("Should generate receipt fee for a vehicle when unparking.")
     @Test
     void shouldGenerateReceiptWithFlatFeeByVehicleTypeOnUnPark() {
         ParkingLot parkingLot = this.parkingLotBuilder.build();
@@ -66,6 +71,7 @@ class ParkingLotTest {
         assertEquals(200, receipt.getParkingCharges());
     }
 
+    @DisplayName("Should generate receipt fee for all vehicles when unparking.")
     @Test
     void shouldApplyFlatRateMultiplierAcrossAllVehicleTypes() {
         ParkingLot parkingLot = this.parkingLotBuilder.build();
