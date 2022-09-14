@@ -1,5 +1,7 @@
 package org.sahaj.parkinglot;
 
+import org.sahaj.parkinglot.model.ParkingLotFullException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -28,7 +30,8 @@ public class ParkingLot {
                 .map(spot -> {
                     spots.remove(spot);
                     return spot;
-                }).map(spot -> new Ticket(parkingSequenceNumber++, spot, vehicle)).orElse(null);
+                }).map(spot -> new Ticket(parkingSequenceNumber++, spot, vehicle))
+                .orElseThrow(() -> new ParkingLotFullException(String.format("All the %s slots are full", spots.size())));
     }
 
     public Receipt unPark(final Ticket ticket) {

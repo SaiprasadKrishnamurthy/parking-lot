@@ -1,9 +1,12 @@
 package org.sahaj.parkinglot;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.sahaj.parkinglot.model.ParkingLotFullException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ParkingLotTest {
 
@@ -74,5 +77,18 @@ class ParkingLotTest {
         Receipt bikeFare = parkingLot.unPark(parkingLot.park(bike));
         assertEquals(bikeFare.getParkingCharges() * 3, truckFare.getParkingCharges());
         assertEquals(bikeFare.getParkingCharges() * 2, carFare.getParkingCharges());
+    }
+
+    @DisplayName("When there are no parking slots available, if attempted to park an exception is raised")
+    @Test
+    void shouldRaiseAnErrorWhenAttemptedToParkWhenNoSlotsAvailable() {
+        ParkingLot parkingLot = this.parkingLotBuilder.withMediumSpots(3).withSmallSpots(0).withLargeSpots(0).build();
+        assertThrows(ParkingLotFullException.class, () -> {
+            parkingLot.park(Vehicle.CAR);
+            parkingLot.park(Vehicle.CAR);
+            parkingLot.park(Vehicle.CAR);
+            parkingLot.park(Vehicle.CAR);
+
+        }, "Expected ParkingLotFullException but didn't");
     }
 }
