@@ -33,7 +33,10 @@ public class ParkingLot {
     }
 
     public Receipt unPark(final Ticket ticket) {
-        spots.add(ticket.getSpot());
+        // Only release the spot if it's not released already to avoid double counting.
+        if (!spots.contains(ticket.getSpot())) {
+            spots.add(ticket.getSpot());
+        }
         return receiptGenerator.generate(ticket);
     }
 
