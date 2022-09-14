@@ -22,14 +22,13 @@ public class ParkingLot {
     }
 
     public Ticket park(final Vehicle vehicle) {
-        Spot selectedSpot = null;
-        for (Spot spot : spots) {
-            if (spot.getCarType() == vehicle) {
-                selectedSpot = spot;
-            }
-        }
-        if (selectedSpot != null) spots.remove(selectedSpot);
-        return new Ticket(parkingSequenceNumber++, selectedSpot, vehicle);
+        return spots.stream()
+                .filter(spot -> spot.getCarType() == vehicle)
+                .findFirst()
+                .map(spot -> {
+                    spots.remove(spot);
+                    return spot;
+                }).map(spot -> new Ticket(parkingSequenceNumber++, spot, vehicle)).orElse(null);
     }
 
     public Receipt unPark(final Ticket ticket) {
