@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Spot {
 
     private final String id = UUID.randomUUID().toString();
-    private Vehicle carType;
+    private final Vehicle carType;
 
     public Spot(final Vehicle carType) {
         this.carType = carType;

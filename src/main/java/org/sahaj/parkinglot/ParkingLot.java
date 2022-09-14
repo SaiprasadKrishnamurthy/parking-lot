@@ -4,42 +4,54 @@ import org.sahaj.parkinglot.model.ParkingLotFullException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toSet;
 
 public class ParkingLot {
 
-    private final List<Spot> spots;
     private Integer parkingSequenceNumber = 0;
-    private ReceiptGenerator receiptGenerator;
+    private final ReceiptGenerator receiptGenerator;
+    private final Set<Spot> availableSlots;
+    private final Set<Spot> occupiedSlots;
 
-    private ParkingLot(List<Spot> spots) {
-        this.spots = spots;
+    private ParkingLot(final List<Spot> spots) {
         this.receiptGenerator = new ReceiptGenerator();
+        this.availableSlots = ConcurrentHashMap.newKeySet();
+        this.occupiedSlots = ConcurrentHashMap.newKeySet();
+        this.availableSlots.addAll(spots);
     }
 
     public Integer totalSpotCount() {
-        return this.spots.size();
+        return this.availableSlots.size();
     }
 
     public Ticket park(final Vehicle vehicle) {
-        return spots.stream()
+        return availableSlots.stream()
                 .filter(spot -> spot.getCarType() == vehicle)
                 .findFirst()
                 .map(spot -> {
-                    spots.remove(spot);
+                    availableSlots.remove(spot);
+                    occupiedSlots.add(spot);
                     return spot;
                 }).map(spot -> new Ticket(parkingSequenceNumber++, spot, vehicle))
-                .orElseThrow(() -> new ParkingLotFullException(String.format("All the %s slots are full", spots.size())));
+                .orElseThrow(() -> new ParkingLotFullException(String.format("All the %s slots are full", occupiedSlots.size())));
     }
 
     public Receipt unPark(final Ticket ticket) {
         // Only release the spot if it's not released already to avoid double counting.
-        if (!spots.contains(ticket.getSpot())) {
-            spots.add(ticket.getSpot());
+        if (occupiedSlots.contains(ticket.getSpot())) {
+            availableSlots.add(ticket.getSpot());
+            occupiedSlots.remove(ticket.getSpot());
+            return receiptGenerator.generate(ticket);
+        } else if (availableSlots.contains(ticket.getSpot())) {
+            // Return the Receipt using the 'as-is' ticket
+            return receiptGenerator.generate(ticket);
+        } else {
+            throw new IllegalArgumentException("Invalid Ticket Passed");
         }
-        return receiptGenerator.generate(ticket);
     }
 
     public static class Builder {

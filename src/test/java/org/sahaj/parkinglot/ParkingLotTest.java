@@ -91,4 +91,15 @@ class ParkingLotTest {
 
         }, "Expected ParkingLotFullException but didn't");
     }
+
+    @DisplayName("When an artificially created ticket is passed, an exception should be raised and the no of slots should not be impacted.")
+    @Test
+    void shouldRaiseAnErrorWhenAttemptedToUnparkWithAnInvalidTicket() {
+        ParkingLot parkingLot = this.parkingLotBuilder.withMediumSpots(2).withSmallSpots(0).withLargeSpots(0).build();
+        parkingLot.park(Vehicle.CAR); //ok
+        parkingLot.park(Vehicle.CAR); // ok
+        assertThrows(IllegalArgumentException.class, () -> {
+            parkingLot.unPark(new Ticket(-1, new Spot(Vehicle.CAR), Vehicle.CAR));
+        }, "Expected IllegalArgumentException but didn't");
+    }
 }
