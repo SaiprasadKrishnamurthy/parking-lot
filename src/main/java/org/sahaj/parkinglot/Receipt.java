@@ -12,6 +12,10 @@ public class Receipt {
         this.vehicle = vehicle;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     public Vehicle forVehicle() {
         return this.vehicle;
     }
