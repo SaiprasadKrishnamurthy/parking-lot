@@ -1,6 +1,9 @@
 package org.sahaj.parkinglot;
 
+import java.util.UUID;
+
 public class Receipt {
+    private String id = UUID.randomUUID().toString();
     private Double parkingCharges;
     private Vehicle vehicle;
 
